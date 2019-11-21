@@ -33,7 +33,7 @@ class Star {
         this.typeWriter(this.text, 0, 20, 20, 20, 20)
         this.typing = true
         //setTimeout(this.doneTest, 1000)
-        this.timeout = setTimeout(() => this.doneTest(), 6000);
+        this.timeout = setTimeout(() => this.doneTest(), 8000);
       }
     }
 
