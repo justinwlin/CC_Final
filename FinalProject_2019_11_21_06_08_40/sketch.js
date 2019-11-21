@@ -19,7 +19,7 @@ let starToDisplay = {
 
 function preload() {
   myFont = loadFont('cursiveFont.ttf');
-  parsedText = loadStrings('MorningAfterIKilledMySelf.txt');
+  parsedText = loadStrings('starPpl.txt');
 }
 
 function setup() {
