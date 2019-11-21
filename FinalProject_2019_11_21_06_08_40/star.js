@@ -25,6 +25,7 @@ class Star {
   }
 
   show() {
+    print(this.name + str(this.expandCounter <= this.expandMax))
     if (this.expandCounter <= this.expandMax) {
       this.displayStar()
     } else {
@@ -32,7 +33,7 @@ class Star {
         this.typeWriter(this.text, 0, 20, 20, 20, 20)
         this.typing = true
         //setTimeout(this.doneTest, 1000)
-        this.timeout = setTimeout(() => this.doneTest(), 5000);
+        this.timeout = setTimeout(() => this.doneTest(), 6000);
       }
     }
 
@@ -53,8 +54,7 @@ class Star {
       if (this.sizeOfGlow >= this.sizeOfGlowMax) {
         this.pulsing = false
       }
-    }
-    else {
+    } else {
       this.sizeOfGlow -= 1
       if (this.sizeOfGlow <= 0) {
         this.pulsing = true
@@ -77,13 +77,18 @@ class Star {
       this.starDisplay.star = this.name
 
     }
-    if (this.starDisplay.star == this.doneState) {
+    print(this.starDisplay.star)
+    print(this.doneState)
+    print(this.starDisplay.star == this.doneState)
+    if (this.starDisplay.done == this.doneState) {
       print("RESET")
+      this.starDisplay.done = ""
       this.starDisplay.star = ""
       this.expand = false
       this.expandCounter = 0
       this.doneTyping = false
       this.typing = false
+
     }
   }
 
@@ -102,7 +107,7 @@ class Star {
 
   doneTest() {
     print(this.starDisplay)
-    this.starDisplay.star = this.doneState
+    this.starDisplay.done = this.doneState
     print(this.starDisplay)
   }
 

@@ -8,7 +8,8 @@ done = false
 
 let stars = []
 let starToDisplay = {
-  star: ""
+  star: "",
+  done: ""
 }
 //(x, y, r, g, b, diameter, text)
 
@@ -22,7 +23,6 @@ function preload() {
 }
 
 function setup() {
-  frameRate(20);
   createCanvas(500, 400);
   textFont(myFont);
   background(backgroundColor);
@@ -64,9 +64,6 @@ function draw() {
       background(0)
     }
 
-    // print("STAR DISPLAY")
-    // print(starToDisplay)
-    // print("-STAR DISPLAY-")
     stars.forEach(star => {
       if (starToDisplay.star == "") {
         star.show()
@@ -84,7 +81,14 @@ function mouseClicked() {
   print(mouseX + "," + mouseY)
   print("----")
   if (turnPage) {
-    stars.forEach(star => star.checkClicked(mouseX, mouseY))
+    stars.forEach(star => {
+      if (starToDisplay.star == "") {
+        star.checkClicked(mouseX, mouseY)
+      }
+      if (starToDisplay.star == star.name) {
+        star.checkClicked(mouseX, mouseY)
+      }
+    })
   }
 }
 
