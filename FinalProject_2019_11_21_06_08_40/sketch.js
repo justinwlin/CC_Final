@@ -7,12 +7,14 @@ stringToLoad = ""
 done = false
 
 let stars = []
+let starToDisplay = {
+  star: ""
+}
 //(x, y, r, g, b, diameter, text)
-whiteDwarf = new Star(104,119 , 201, 255, 251, 25, "white dwarf")
-pulsar = new Star(241,49 , 255, 51, 153, 50, "pulsar")
-superNova = new Star(398,169 , 51, 51, 204, 100, "super nova")
-blueGiant = new Star(160,292, 0, 102, 255, 75, "blue giant")
-polar = new Star(358,301, 102, 204, 255, 25, "polar")
+
+
+
+
 
 function preload() {
   myFont = loadFont('cursiveFont.ttf');
@@ -25,40 +27,61 @@ function setup() {
   background(backgroundColor);
   typeWriter(title, 0, 20, 180, 20, 30);
   let newlineAtEveryWord = 10
-  
+
   let filtered_parsedText = parsedText.filter(word => word.length > 1)
-  for(let i = 0; i < filtered_parsedText.length; i++){
+  for (let i = 0; i < filtered_parsedText.length; i++) {
     filtered_parsedText[i] = filtered_parsedText[i].trim()
     filtered_parsedText[i] = filtered_parsedText[i].split(" ")
-    // for(let j = 0; j < filtered_parsedText[i].length; j++){
-    //   if(j % newlineAtEveryWord == 0 && j != 0){
-    //     filtered_parsedText[i].splice( j, 0, "\n")
-    //   }
-    // }
+    words = filtered_parsedText[i]
+    for (let k = 0; k < words.length; k++) {
+      if (words[k] == ";") {
+        words[k] = "\n"
+      }
+    }
     filtered_parsedText[i] = filtered_parsedText[i].join(" ")
   }
   parsedText = filtered_parsedText
   print(parsedText)
-  
+
+  whiteDwarf = new Star(104, 119, 201, 255, 251, 25, "white dwarf", parsedText[0], starToDisplay)
+  pulsar = new Star(241, 49, 255, 51, 153, 50, "pulsar", parsedText[1], starToDisplay)
+  superNova = new Star(398, 169, 51, 51, 204, 100, "super nova", parsedText[2], starToDisplay)
+  blueGiant = new Star(160, 292, 0, 102, 255, 75, "blue giant", parsedText[3], starToDisplay)
+  polar = new Star(358, 301, 102, 204, 255, 25, "polar", parsedText[4], starToDisplay)
+
   stars.push(whiteDwarf)
   stars.push(pulsar)
   stars.push(superNova)
   stars.push(blueGiant)
   stars.push(polar)
-  
+
 }
 
 function draw() {
-  if(turnPage){
-    background(0)
-    stars.forEach(star => star.show())
+  if (turnPage) {
+    if(starToDisplay.star == ""){
+      background(0)
+    }
+
+    stars.forEach(star => {
+      if (starToDisplay.star == "") {
+        star.show()
+      }
+      if (star.name == starToDisplay.star) {
+        star.show()
+      }
+
+    })
   }
 
 }
 
-function mouseClicked(){
+function mouseClicked() {
   print(mouseX + "," + mouseY)
   print("----")
+  if (turnPage) {
+    stars.forEach(star => star.checkClicked(mouseX, mouseY))
+  }
 }
 
 function keyTyped() {
@@ -79,10 +102,7 @@ function typeWriter(sentence, n, x, y, speed, size) {
     setTimeout(function() {
       typeWriter(sentence, n, x, y, speed)
     }, speed);
-  }else{
+  } else {
     done = true
   }
 }
-
-
-
