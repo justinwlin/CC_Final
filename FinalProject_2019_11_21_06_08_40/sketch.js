@@ -22,6 +22,7 @@ function preload() {
 }
 
 function setup() {
+  frameRate(20);
   createCanvas(500, 400);
   textFont(myFont);
   background(backgroundColor);
@@ -59,10 +60,13 @@ function setup() {
 
 function draw() {
   if (turnPage) {
-    if(starToDisplay.star == ""){
+    if (starToDisplay.star == "") {
       background(0)
     }
 
+    // print("STAR DISPLAY")
+    // print(starToDisplay)
+    // print("-STAR DISPLAY-")
     stars.forEach(star => {
       if (starToDisplay.star == "") {
         star.show()
@@ -99,7 +103,7 @@ function typeWriter(sentence, n, x, y, speed, size) {
     textSize(size)
     text(sentence.substring(0, n + 1), x, y);
     n++;
-    setTimeout(function() {
+    setTimeout(function () {
       typeWriter(sentence, n, x, y, speed)
     }, speed);
   } else {

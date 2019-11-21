@@ -9,6 +9,8 @@ class Star {
     this.text = text
     this.diameter = diameter
     this.sizeOfGlow = 5
+    this.pulsing = true
+    this.sizeOfGlowMax = 20
 
     this.expand = false
     this.expandCounter = 0
@@ -18,29 +20,22 @@ class Star {
     this.backgroundSet = false
     this.typing = false
     this.doneTyping = false
+
+    this.doneState = "Done"
   }
 
   show() {
     if (this.expandCounter <= this.expandMax) {
       this.displayStar()
     } else {
-      // if(this.backgroundSet == false){
-      //    background(this.r, this.g, this.b)
-      //    this.backGroundSet = true
-      // }
       if (this.typing == false) {
         this.typeWriter(this.text, 0, 20, 20, 20, 20)
         this.typing = true
-        this.doneTyping = true
-        
-      setTimeout(function() {
-        this.doneTyping = true
-        print("done")
-      }, 3500);
-
+        //setTimeout(this.doneTest, 1000)
+        this.timeout = setTimeout(() => this.doneTest(), 5000);
       }
-
     }
+
   }
 
 
@@ -53,12 +48,24 @@ class Star {
     noStroke();
     fill(255);
     ellipse(this.x, this.y, this.diameter + this.sizeOfGlow, this.diameter + this.sizeOfGlow); //Blur Color
+    if (this.pulsing == true) {
+      this.sizeOfGlow += 1
+      if (this.sizeOfGlow >= this.sizeOfGlowMax) {
+        this.pulsing = false
+      }
+    }
+    else {
+      this.sizeOfGlow -= 1
+      if (this.sizeOfGlow <= 0) {
+        this.pulsing = true
+      }
+    }
     //filter( BLUR, 20 );
     stroke(0);
     fill(this.r, this.g, this.b);
     ellipse(this.x, this.y, this.diameter + this.expandCounter, this.diameter + this.expandCounter); //Main Color
     if (this.expand && this.expandCounter <= this.expandMax) {
-      this.expandCounter += 5
+      this.expandCounter += 15
     }
   }
 
@@ -68,9 +75,10 @@ class Star {
       print("clicked")
       this.expand = true
       this.starDisplay.star = this.name
-    }
 
-    if (this.expand == true && this.doneTyping) {
+    }
+    if (this.starDisplay.star == this.doneState) {
+      print("RESET")
       this.starDisplay.star = ""
       this.expand = false
       this.expandCounter = 0
@@ -86,14 +94,16 @@ class Star {
       textSize(size)
       text(sentence.substring(0, n + 1), x, y);
       n++;
-      setTimeout(function() {
+      setTimeout(function () {
         typeWriter(sentence, n, x, y, speed, 18)
       }, speed);
     }
   }
-  
-  doneTest(){
-    print("DONE")
+
+  doneTest() {
+    print(this.starDisplay)
+    this.starDisplay.star = this.doneState
+    print(this.starDisplay)
   }
 
 
