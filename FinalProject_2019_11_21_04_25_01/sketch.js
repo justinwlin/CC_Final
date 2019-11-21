@@ -1,10 +1,18 @@
 let myFont;
-let title = "The morning after I killed \n myself \n\n by Meggie Royer";
+let title = "types of people: \n \t stars edition";
 let turnPage = false
 let backgroundColor = 0
-let page = 0
+let page = -1
 stringToLoad = ""
 done = false
+
+let stars = []
+//(x, y, r, g, b, diameter, text)
+whiteDwarf = new Star(104,119 , 201, 255, 251, 25, "white dwarf")
+pulsar = new Star(241,49 , 255, 51, 153, 50, "pulsar")
+superNova = new Star(398,169 , 51, 51, 204, 100, "super nova")
+blueGiant = new Star(160,292, 0, 102, 255, 75, "blue giant")
+polar = new Star(358,301, 102, 204, 255, 25, "polar")
 
 function preload() {
   myFont = loadFont('cursiveFont.ttf');
@@ -22,35 +30,35 @@ function setup() {
   for(let i = 0; i < filtered_parsedText.length; i++){
     filtered_parsedText[i] = filtered_parsedText[i].trim()
     filtered_parsedText[i] = filtered_parsedText[i].split(" ")
-    print(filtered_parsedText[i])
-    for(let j = 0; j < filtered_parsedText[i].length; j++){
-      if(j % newlineAtEveryWord == 0 && j != 0){
-        filtered_parsedText[i].splice( j, 0, "\n")
-      }
-    }
+    // for(let j = 0; j < filtered_parsedText[i].length; j++){
+    //   if(j % newlineAtEveryWord == 0 && j != 0){
+    //     filtered_parsedText[i].splice( j, 0, "\n")
+    //   }
+    // }
     filtered_parsedText[i] = filtered_parsedText[i].join(" ")
   }
   parsedText = filtered_parsedText
+  print(parsedText)
+  
+  stars.push(whiteDwarf)
+  stars.push(pulsar)
+  stars.push(superNova)
+  stars.push(blueGiant)
+  stars.push(polar)
   
 }
 
 function draw() {
-  if(turnPage && done){
-    background(backgroundColor)
-    turnPage = false
-    page += 1
-    if(page >= parsedText.length){
-      page = 0
-      background(backgroundColor);
-      typeWriter(title, 0, 20, 180, 20, 30);
-    } else{
-      stringToLoad = parsedText[page]
-      typeWriter(stringToLoad, 0, 20, 280, 10, 20);
-    }
-  }else{
-    turnPage = false
+  if(turnPage){
+    background(0)
+    stars.forEach(star => star.show())
   }
 
+}
+
+function mouseClicked(){
+  print(mouseX + "," + mouseY)
+  print("----")
 }
 
 function keyTyped() {
@@ -75,3 +83,6 @@ function typeWriter(sentence, n, x, y, speed, size) {
     done = true
   }
 }
+
+
+
