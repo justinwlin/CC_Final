@@ -1,3 +1,11 @@
+/*
+Idea of the project:
+There are multiple "stars" that the viewers can click on, and depending on the star that they click on, pulls a related poem to that star. 
+The poem then is typed on the screen, and the code will make a request to Twitter API account to see how many people "like" a certain poem 
+and create hearts as a visualization to the poem's popularity. 
+
+Currently twitter api dev account need to be approved, so waiting for approval currently.
+*/
 let myFont;
 let title = "types of people: \n \t stars edition \n - credit to: Alaska Gold";
 let turnPage = false
