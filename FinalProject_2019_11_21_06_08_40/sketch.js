@@ -1,25 +1,24 @@
 let myFont;
-let title = "types of people: \n \t stars edition";
+let title = "types of people: \n \t stars edition \n - credit to: Alaska Gold";
 let turnPage = false
 let backgroundColor = 0
 let page = -1
 stringToLoad = ""
-done = false
+titleDone = false
 
 let stars = []
+
+
 let starToDisplay = {
   star: "",
   done: ""
 }
+
 //(x, y, r, g, b, diameter, text)
-
-
-
-
-
 function preload() {
   myFont = loadFont('cursiveFont.ttf');
   parsedText = loadStrings('starPpl.txt');
+  heart = loadImage('red_heart.png');
 }
 
 function setup() {
@@ -27,8 +26,8 @@ function setup() {
   textFont(myFont);
   background(backgroundColor);
   typeWriter(title, 0, 20, 180, 20, 30);
-  let newlineAtEveryWord = 10
 
+  //Preprocessing Text
   let filtered_parsedText = parsedText.filter(word => word.length > 1)
   for (let i = 0; i < filtered_parsedText.length; i++) {
     filtered_parsedText[i] = filtered_parsedText[i].trim()
@@ -56,6 +55,8 @@ function setup() {
   stars.push(blueGiant)
   stars.push(polar)
 
+
+
 }
 
 function draw() {
@@ -63,24 +64,14 @@ function draw() {
     if (starToDisplay.star == "") {
       background(0)
     }
+    //image(heart, 10, 10, 50, 50);
+    displayStar(starToDisplay.star)
 
-    stars.forEach(star => {
-      if (starToDisplay.star == "") {
-        star.show()
-      }
-      if (star.name == starToDisplay.star) {
-        star.show()
-      }
-
-    })
   }
-
 }
 
 function mouseClicked() {
-  print(mouseX + "," + mouseY)
-  print("----")
-  if (turnPage) {
+  if (turnPage == true) {
     stars.forEach(star => {
       if (starToDisplay.star == "") {
         star.checkClicked(mouseX, mouseY)
@@ -90,12 +81,23 @@ function mouseClicked() {
       }
     })
   }
+
+  if (titleDone) {
+    turnPage = true
+  }
 }
 
-function keyTyped() {
-  //normal voting
-  if (key === "p") {
-    turnPage = true
+function displayStar(flag) {
+  if (flag == "") {
+    stars.forEach(star => {
+      star.show()
+    })
+  } else {
+    stars.forEach(star => {
+      if (star.getName() == flag) {
+        star.show()
+      }
+    })
   }
 }
 
@@ -107,10 +109,12 @@ function typeWriter(sentence, n, x, y, speed, size) {
     textSize(size)
     text(sentence.substring(0, n + 1), x, y);
     n++;
-    setTimeout(function () {
+    //Need to use arrow function here in order to reference in same context
+    setTimeout(() => {
       typeWriter(sentence, n, x, y, speed)
     }, speed);
   } else {
-    done = true
+    titleDone = true
+    print("Done")
   }
 }

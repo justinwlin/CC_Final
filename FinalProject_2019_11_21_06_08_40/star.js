@@ -20,20 +20,36 @@ class Star {
     this.backgroundSet = false
     this.typing = false
     this.doneTyping = false
-
     this.doneState = "Done"
+
+    this.Particles = [] //Array of particles
   }
 
   show() {
-    print(this.name + str(this.expandCounter <= this.expandMax))
+    let size = 20
+    let x = 10
+    let y = 100
     if (this.expandCounter <= this.expandMax) {
       this.displayStar()
     } else {
       if (this.typing == false) {
-        this.typeWriter(this.text, 0, 20, 20, 20, 20)
+        this.typeWriter(this.text, 0, x, y, 20, size)
         this.typing = true
-        //setTimeout(this.doneTest, 1000)
-        this.timeout = setTimeout(() => this.doneTest(), 8000);
+      }
+      //Finished state
+      if (this.starDisplay.done == this.doneState) {
+        background(this.r, this.g, this.b)
+
+        if (this.Particles.length == 0) {
+          this.addParticles(10)
+        }
+        this.runParticles()
+        stroke(5)
+        textSize(size)
+        fill(255)
+        text(this.text, x, y)
+
+        // print("Refreshing")
       }
     }
 
@@ -41,6 +57,8 @@ class Star {
 
 
   displayStar() {
+    ellipseMode(CENTER);
+    let glowRate = 1
     smooth()
     noStroke()
     fill(this.r, this.g, this.b, 0)
@@ -48,22 +66,19 @@ class Star {
     smooth();
     noStroke();
     fill(255);
-    ellipse(this.x, this.y, this.diameter + this.sizeOfGlow, this.diameter + this.sizeOfGlow); //Blur Color
-    if (this.pulsing == true) {
-      this.sizeOfGlow += 1
-      if (this.sizeOfGlow >= this.sizeOfGlowMax) {
-        this.pulsing = false
-      }
-    } else {
-      this.sizeOfGlow -= 1
-      if (this.sizeOfGlow <= 0) {
-        this.pulsing = true
-      }
-    }
-    //filter( BLUR, 20 );
+    //Outside star glow
+    ellipse(this.x, this.y, this.diameter + this.sizeOfGlow, this.diameter + this.sizeOfGlow);
+    //Inner main color
     stroke(0);
     fill(this.r, this.g, this.b);
     ellipse(this.x, this.y, this.diameter + this.expandCounter, this.diameter + this.expandCounter); //Main Color
+
+
+    //Text name
+    textSize(20)
+    fill(255)
+    text(this.name, this.x - this.diameter / 2, this.y + this.diameter / 2 + 20);
+    this.pulsingLogic()
     if (this.expand && this.expandCounter <= this.expandMax) {
       this.expandCounter += 15
     }
@@ -72,24 +87,54 @@ class Star {
   checkClicked(clickX, clickY) {
     let distance = dist(clickX, clickY, this.x, this.y)
     if (distance <= this.diameter && this.expand == false) {
-      print("clicked")
+      print("Clicked on: " + this.name)
       this.expand = true
       this.starDisplay.star = this.name
-
     }
-    print(this.starDisplay.star)
-    print(this.doneState)
-    print(this.starDisplay.star == this.doneState)
     if (this.starDisplay.done == this.doneState) {
-      print("RESET")
       this.starDisplay.done = ""
       this.starDisplay.star = ""
       this.expand = false
       this.expandCounter = 0
       this.doneTyping = false
       this.typing = false
-
+      this.Particles = []
     }
+  }
+
+  getName() {
+    return this.name
+  }
+
+  pulsingLogic() {
+    let glowRate = 1
+    if (this.pulsing == true) {
+      this.sizeOfGlow += glowRate
+      if (this.sizeOfGlow >= this.sizeOfGlowMax) {
+        this.pulsing = false
+      }
+    } else {
+      this.sizeOfGlow -= glowRate
+      if (this.sizeOfGlow <= 0) {
+        this.pulsing = true
+      }
+    }
+  }
+
+  addParticles(num) {
+    //Particles 
+    for (let i = 0; i < num; i++) {
+      let spawnParticle = new Particle()
+      this.Particles.push(spawnParticle)
+    }
+  }
+
+  runParticles() {
+    this.Particles.forEach(particle => {
+      particle.update()
+      particle.show(heart)
+      print("Testing")
+    });
   }
 
   typeWriter(sentence, n, x, y, speed, size) {
@@ -99,16 +144,15 @@ class Star {
       textSize(size)
       text(sentence.substring(0, n + 1), x, y);
       n++;
-      setTimeout(function () {
-        typeWriter(sentence, n, x, y, speed, 18)
+      //Need to use arrow function here in order to reference in same context
+      setTimeout(() => {
+        this.typeWriter(sentence, n, x, y, speed)
       }, speed);
+    } else {
+      print("Done in Star")
+      this.starDisplay.done = this.doneState
+      print(this.starDisplay)
     }
-  }
-
-  doneTest() {
-    print(this.starDisplay)
-    this.starDisplay.done = this.doneState
-    print(this.starDisplay)
   }
 
 
