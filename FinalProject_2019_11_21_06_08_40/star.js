@@ -57,11 +57,17 @@ class Star {
 
 
   displayStar() {
+
     ellipseMode(CENTER);
     let glowRate = 1
     smooth()
     noStroke()
     fill(this.r, this.g, this.b, 0)
+    //Text name
+    textSize(20)
+    fill(255)
+    text(this.name, this.x - this.diameter / 2, this.y + this.diameter / 2 + 20);
+
     //Ellipse with blur
     smooth();
     noStroke();
@@ -74,10 +80,9 @@ class Star {
     ellipse(this.x, this.y, this.diameter + this.expandCounter, this.diameter + this.expandCounter); //Main Color
 
 
-    //Text name
-    textSize(20)
-    fill(255)
-    text(this.name, this.x - this.diameter / 2, this.y + this.diameter / 2 + 20);
+
+
+
     this.pulsingLogic()
     if (this.expand && this.expandCounter <= this.expandMax) {
       this.expandCounter += 15
